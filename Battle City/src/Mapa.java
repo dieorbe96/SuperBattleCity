@@ -9,16 +9,25 @@ import java.io.IOException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import PU.*;
+import Pisos.*;
+import Tanque.*;
 
 
-public class GUI extends JFrame{
+
+public class Mapa extends JFrame{
 	private JPanel panel,panelObstaculos,panelFondo;
 	private JLabel label;
-	private ImageIcon[] jugadorGrafico; 
+	private ImageIcon[] celdaGrafico;
+	private ImageIcon[] jugadorGrafico;
+	private ImageIcon[] enemigosGrafico;
+	private Jugador player;
+	private Enemigo[] enemigos;
+	private PowerUp powerUpActivo;
 	private static final int h=32;
 	private static final int w=32;
 	
-	public GUI(){
+	public Mapa(){
 		super();
 		setSize(new Dimension(384, 384)); // 1024 768
 		getContentPane().setLayout(null);
@@ -44,7 +53,7 @@ public class GUI extends JFrame{
 		
 		
 		label = new JLabel();
-		label.setBounds(0, 0,10,10);
+		label.setBounds(0, 0,h-2,w-2);
 		
 		label.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/37.png")));
 		label.setOpaque(false);
@@ -64,22 +73,25 @@ public class GUI extends JFrame{
 		}
 	
 	private void mover(int k){
-		switch(k){
-		case KeyEvent.VK_UP :
-			label.setBounds((int) label.getBounds().getX(),(int) label.getBounds().getY() - 10, h, w);
-			break;
-		case KeyEvent.VK_DOWN :
-			label.setBounds((int) label.getBounds().getX(),(int) label.getBounds().getY()  +10 , h, w);
-			break;
-		case KeyEvent.VK_RIGHT :
-			label.setBounds((int) label.getBounds().getX() +10,(int) label.getBounds().getY(), h, w);
-			break;
-		case KeyEvent.VK_LEFT :
-			label.setBounds((int) label.getBounds().getX() -10,(int) label.getBounds().getY(), h,w );
-			break;
-		
-	}
+//		switch(k){
+//		case KeyEvent.VK_UP :
+//			label.setBounds((int) label.getBounds().getX(),(int) label.getBounds().getY() - 10, h-2, w-2);
+//			break;
+//		case KeyEvent.VK_DOWN :
+//			label.setBounds((int) label.getBounds().getX(),(int) label.getBounds().getY()  +10 , h-2, w-2);
+//			break;
+//		case KeyEvent.VK_RIGHT :
+//			label.setBounds((int) label.getBounds().getX() +10,(int) label.getBounds().getY(), h-2, w-2);
+//			break;
+//		case KeyEvent.VK_LEFT :
+//			label.setBounds((int) label.getBounds().getX() -10,(int) label.getBounds().getY(), h-2,w-2 );
+//			break;
+//		
+//		} CODIGO VIEJO, LO DEJO POR LAS DUDAS
+		player.mover(k);//Movemos el jugador
+		label.setBounds((int)player.getX(),(int)player.getY(),h-2,w-2);//Repainteamos
 		label.setIcon(jugadorGrafico[k-37]);
+		
 	}
 	
 	private void armarMapa(){
@@ -89,31 +101,43 @@ public class GUI extends JFrame{
 		JLabel aux;
 		try {
 			br = new BufferedReader(new FileReader(file));
+			Celda celda;
 			int columna=0;
 			while((sCurrent = br.readLine())!=null){
 				for(int i=0;i<sCurrent.length();i++){
 					char ch=sCurrent.charAt(i);
 					switch(ch){
 						case'1': 	aux=new JLabel();
-									
 									aux.setBounds(i*h,columna*w,h,w);
-								
-									
-									aux.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/Agua.png")));
+									celda=new Agua();
+									//celda.setX(i*h);		//	
+									//celda.setY(columna*w);	// Nose si seria necesario conocer la ubicacion de la celda
+									aux.setIcon(celdaGrafico[0]);
 									aux.setOpaque(false);
 									panelObstaculos.add(aux,i,columna); 
 									
-									System.out.println("lei un 1 y estoy en F:"+i+" C:"+columna);
+									//System.out.println("lei un 1 y estoy en F:"+i+" C:"+columna);
 								break;
-						case '2':aux=new JLabel();
-						aux.setBounds(i*h,columna*w,h,w);
-						
-						aux.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/Arbol.png")));
-						panelObstaculos.add(aux,i,columna);
+						case '2':	aux=new JLabel();
+									aux.setBounds(i*h,columna*w,h,w);
+									celda=new Arbol();
+									aux.setIcon(celdaGrafico[1]);
+									aux.setOpaque(false);
+									panelObstaculos.add(aux,i,columna); 
 								break;
-						case '3':panelObstaculos.add(new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Ladrillo.png"))),i,columna);
+						case '3':	aux=new JLabel();
+									aux.setBounds(i*h,columna*w,h,w);
+									celda=new Ladrillo();
+									aux.setIcon(celdaGrafico[2]);
+									aux.setOpaque(false);
+									panelObstaculos.add(aux,i,columna); ;
 								break; 
-						case '4': panelObstaculos.add(new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Pared.png"))),i,columna);
+						case '4': 	aux=new JLabel();
+									aux.setBounds(i*h,columna*w,h,w);
+									celda=new Ladrillo();
+									aux.setIcon(celdaGrafico[2]);
+									aux.setOpaque(false);
+									panelObstaculos.add(aux,i,columna); ;
 								break;
 					}
 				}
@@ -133,6 +157,11 @@ public class GUI extends JFrame{
 		jugadorGrafico[2]=new ImageIcon(this.getClass().getResource("/imagenes/39.png"));
 		jugadorGrafico[3]=new ImageIcon(this.getClass().getResource("/imagenes/40.png"));
 		
+		celdaGrafico=new ImageIcon[4];
+		celdaGrafico[0]=new ImageIcon(this.getClass().getResource("/imagenes/Agua.png"));
+		celdaGrafico[1]=new ImageIcon(this.getClass().getResource("/imagenes/Arbol.png"));
+		celdaGrafico[2]=new ImageIcon(this.getClass().getResource("/imagenes/Ladrillo.png"));
+		celdaGrafico[3]=new ImageIcon(this.getClass().getResource("/imagenes/Pared.png"));
 	}
 	}
 
