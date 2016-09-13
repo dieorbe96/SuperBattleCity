@@ -36,7 +36,7 @@ public class GUI extends JFrame{
 		armarMapa(); 
 		
 		
-		label.setBounds(0, 0, 16, 16);
+		label.setBounds(0, 0,50,50);
 		label.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/37.png")));
 		panelFondo.add(label);
 		this.setVisible(true);
@@ -83,7 +83,7 @@ public class GUI extends JFrame{
 					switch(ch){
 						case'1': 	aux=new JLabel();
 									
-									aux.setBounds(i*16,columna*16,16,16);
+									aux.setBounds(i*50,columna*50,50,50);
 								
 									
 									aux.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/Agua.png")));
@@ -93,7 +93,7 @@ public class GUI extends JFrame{
 									System.out.println("lei un 1 y estoy en F:"+i+" C:"+columna);
 								break;
 						case '2':aux=new JLabel();
-						aux.setBounds(i*16,columna*16,16,16);
+						aux.setBounds(i*50,columna*50,50,50);
 						
 						aux.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/Arbol.png")));
 						panelFondo.add(aux,i,columna);
