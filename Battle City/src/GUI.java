@@ -12,33 +12,46 @@ import javax.swing.border.EmptyBorder;
 
 
 public class GUI extends JFrame{
-	private JPanel panel,panelFondo;
+	private JPanel panel,panelObstaculos,panelFondo;
 	private JLabel label;
+	private ImageIcon[] jugadorGrafico; 
+	private static final int h=32;
+	private static final int w=32;
 	
 	public GUI(){
 		super();
-		setSize(new Dimension(440, 400)); // 1024 768
+		setSize(new Dimension(384, 384)); // 1024 768
 		getContentPane().setLayout(null);
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-	
 		panelFondo=new JPanel();
-		panelFondo.setLayout(null);
-		label = new JLabel();
-		
-
-		//setContentPane(panel);
-		panelFondo = new JPanel();
-		panelFondo.setLayout(null);
 		
 		
-		panelFondo.setOpaque(false);
+		panelObstaculos=new JPanel();
+		panelObstaculos.setLayout(null);
+		panelObstaculos.setBackground(Color.BLACK);
+		
+		
+		inicializarImagenes();
+		
+		
+		
+		
+		setContentPane(panelObstaculos);
+		
 		armarMapa(); 
+		panelObstaculos.setVisible(true);
 		
 		
-		label.setBounds(0, 0,50,50);
+		label = new JLabel();
+		label.setBounds(0, 0,10,10);
+		
 		label.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/37.png")));
-		panelFondo.add(label);
+		label.setOpaque(false);
+		
+		panelObstaculos.add(label);
+		
+		getContentPane().setComponentZOrder(label, 0);
 		this.setVisible(true);
 		
 		addKeyListener(new KeyAdapter() {
@@ -53,20 +66,20 @@ public class GUI extends JFrame{
 	private void mover(int k){
 		switch(k){
 		case KeyEvent.VK_UP :
-			label.setBounds((int) label.getBounds().getX(),(int) label.getBounds().getY() - 10, 50, 50);
+			label.setBounds((int) label.getBounds().getX(),(int) label.getBounds().getY() - 10, h, w);
 			break;
 		case KeyEvent.VK_DOWN :
-			label.setBounds((int) label.getBounds().getX(),(int) label.getBounds().getY()  +10 , 50, 50);
+			label.setBounds((int) label.getBounds().getX(),(int) label.getBounds().getY()  +10 , h, w);
 			break;
 		case KeyEvent.VK_RIGHT :
-			label.setBounds((int) label.getBounds().getX() +10,(int) label.getBounds().getY(), 50, 50);
+			label.setBounds((int) label.getBounds().getX() +10,(int) label.getBounds().getY(), h, w);
 			break;
 		case KeyEvent.VK_LEFT :
-			label.setBounds((int) label.getBounds().getX() -10,(int) label.getBounds().getY(), 50, 50);
+			label.setBounds((int) label.getBounds().getX() -10,(int) label.getBounds().getY(), h,w );
 			break;
 		
 	}
-		label.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/"+k+".png")));
+		label.setIcon(jugadorGrafico[k-37]);
 	}
 	
 	private void armarMapa(){
@@ -83,24 +96,24 @@ public class GUI extends JFrame{
 					switch(ch){
 						case'1': 	aux=new JLabel();
 									
-									aux.setBounds(i*50,columna*50,50,50);
+									aux.setBounds(i*h,columna*w,h,w);
 								
 									
 									aux.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/Agua.png")));
 									aux.setOpaque(false);
-									panelFondo.add(aux,i,columna); 
+									panelObstaculos.add(aux,i,columna); 
 									
 									System.out.println("lei un 1 y estoy en F:"+i+" C:"+columna);
 								break;
 						case '2':aux=new JLabel();
-						aux.setBounds(i*50,columna*50,50,50);
+						aux.setBounds(i*h,columna*w,h,w);
 						
 						aux.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/Arbol.png")));
-						panelFondo.add(aux,i,columna);
+						panelObstaculos.add(aux,i,columna);
 								break;
-						case '3':panelFondo.add(new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Ladrillo.png"))),i,columna);
+						case '3':panelObstaculos.add(new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Ladrillo.png"))),i,columna);
 								break; 
-						case '4': panelFondo.add(new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Pared.png"))),i,columna);
+						case '4': panelObstaculos.add(new JLabel(new ImageIcon(this.getClass().getResource("/imagenes/Pared.png"))),i,columna);
 								break;
 					}
 				}
@@ -108,13 +121,18 @@ public class GUI extends JFrame{
 			}
 	  		
 		System.out.println("checkpoint");
-		panelFondo.setVisible(true);
-		
-		setContentPane(panelFondo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+	}
+	private void inicializarImagenes(){
+		jugadorGrafico=new ImageIcon[4];
+		jugadorGrafico[0]=new ImageIcon(this.getClass().getResource("/imagenes/37.png"));
+		jugadorGrafico[1]=new ImageIcon(this.getClass().getResource("/imagenes/38.png"));
+		jugadorGrafico[2]=new ImageIcon(this.getClass().getResource("/imagenes/39.png"));
+		jugadorGrafico[3]=new ImageIcon(this.getClass().getResource("/imagenes/40.png"));
+		
 	}
 	}
 
