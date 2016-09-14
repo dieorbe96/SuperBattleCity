@@ -57,6 +57,7 @@ public class Mapa extends JFrame{
 		
 		label.setIcon(new ImageIcon(this.getClass().getResource("/imagenes/37.png")));
 		label.setOpaque(false);
+		player = new Jugador(0,0);
 		
 		panelObstaculos.add(label);
 		
@@ -109,7 +110,7 @@ public class Mapa extends JFrame{
 					switch(ch){
 						case'1': 	aux=new JLabel();
 									aux.setBounds(i*h,columna*w,h,w);
-									celda=new Agua();
+									celda=new Agua(i*h,columna*w);
 									//celda.setX(i*h);		//	
 									//celda.setY(columna*w);	// Nose si seria necesario conocer la ubicacion de la celda
 									aux.setIcon(celdaGrafico[0]);
@@ -120,22 +121,22 @@ public class Mapa extends JFrame{
 								break;
 						case '2':	aux=new JLabel();
 									aux.setBounds(i*h,columna*w,h,w);
-									celda=new Arbol();
+									celda=new Arbol(i*h,columna*w);
 									aux.setIcon(celdaGrafico[1]);
 									aux.setOpaque(false);
 									panelObstaculos.add(aux,i,columna); 
 								break;
 						case '3':	aux=new JLabel();
 									aux.setBounds(i*h,columna*w,h,w);
-									celda=new Ladrillo();
+									celda=new Ladrillo(i*h,columna*w);
 									aux.setIcon(celdaGrafico[2]);
 									aux.setOpaque(false);
 									panelObstaculos.add(aux,i,columna); ;
 								break; 
 						case '4': 	aux=new JLabel();
 									aux.setBounds(i*h,columna*w,h,w);
-									celda=new Ladrillo();
-									aux.setIcon(celdaGrafico[2]);
+									celda=new Metal(i*h,columna*w);
+									aux.setIcon(celdaGrafico[3]);
 									aux.setOpaque(false);
 									panelObstaculos.add(aux,i,columna); ;
 								break;
