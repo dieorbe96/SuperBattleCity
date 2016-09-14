@@ -1,5 +1,5 @@
 package Pisos;
 
-public class Metal {
+public class Metal extends Celda {
 
 }
