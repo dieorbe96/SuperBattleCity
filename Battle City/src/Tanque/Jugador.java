@@ -6,9 +6,12 @@ public class Jugador {
 	private float posX;
 	private float posY;
 	private boolean PuedoMoverme;
+	private int velocidad;
 	
-	public Jugador(){
-		
+	public Jugador(float x, float y){
+		velocidad=1;
+		posX= x;
+		posY= y;
 	}
 	/*
 	 * Actualiza la posicion del jugador en funcion de la tecla pasada por parametro
@@ -18,16 +21,16 @@ public class Jugador {
 			PuedoMoverme=false;
 			switch(k){
 				case KeyEvent.VK_UP :
-					//aca iria lo del for con la velocidad, en cada case habria que modificar las posiciones
+					posY-=5*velocidad;
 					break;
 				case KeyEvent.VK_DOWN :
-			
+					posY+=5*velocidad;
 					break;
 				case KeyEvent.VK_RIGHT :
-			
+					posX-=5*velocidad;
 					break;
 				case KeyEvent.VK_LEFT :
-			
+					posX+=5*velocidad;
 					break;
 			}
 		PuedoMoverme=true;
