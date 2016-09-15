@@ -27,13 +27,15 @@ public class Jugador {
 				posY+=5*velocidad;
 				break;
 			case KeyEvent.VK_RIGHT :
-				posX-=5*velocidad;
-				break;
-			case KeyEvent.VK_LEFT :
 				posX+=5*velocidad;
 				break;
+			case KeyEvent.VK_LEFT :
+				posX-=5*velocidad;
+				break;
 			}
-		PuedoMoverme=true;
+		}
+		else{
+			PuedoMoverme=true;
 		}
 	}
 	public float getX(){
@@ -42,5 +44,7 @@ public class Jugador {
 	public float getY(){
 		return posY;
 	}
-	
+	public boolean a(){
+		return PuedoMoverme;
+	}
 }

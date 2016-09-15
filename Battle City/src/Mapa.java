@@ -92,7 +92,7 @@ public class Mapa extends JFrame{
 		player.mover(k);//Movemos el jugador
 		label.setBounds((int)player.getX(),(int)player.getY(),h-2,w-2);//Repainteamos
 		label.setIcon(jugadorGrafico[k-37]);
-		
+		System.out.println(player.a());
 	}
 	
 	private void armarMapa(){
